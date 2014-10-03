@@ -1,0 +1,37 @@
+package hospital;
+
+public abstract class PersonSet {
+	protected static int x, y, radius, health, xp;
+	protected static double speed;
+	protected static int alive;
+
+	public PersonSet(int x, int y) {
+		PersonSet.x = x;
+		PersonSet.y = y;
+		radius = 10;
+
+	}
+
+	public static int getX() {
+		return x;
+	}
+
+	public static int getY() {
+		return y;
+	}
+
+	public static int getRadius() {
+		return radius;
+	}
+
+	public static double getSpeed() {
+		return speed;
+	}
+
+	public static int getHealth() {
+		return health;
+	}
+	public static int getAlive() {
+		return alive;
+	}
+}

@@ -1,0 +1,52 @@
+package hospital;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+@SuppressWarnings("serial")
+public class Building extends JPanel {
+	Doctor d;
+	public Building() {
+		d = new Doctor(100, 200) ;
+		setSize(1000, 1000);
+		setPreferredSize(new Dimension(1000, 1000));
+		setFocusable(true);
+
+	}
+
+	public void paint(Graphics g) {
+		d.draw(g, this);
+		g.dispose();
+		repaint();
+
+		try {
+			Thread.sleep(17);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String arg[]) {
+		Building game = new Building();
+		JFrame f = new JFrame();
+		f.add(new JLabel(new ImageIcon("Libraries/Pictures/heart.png")));
+		f.setResizable(false);
+		f.add(game);
+		f.pack();
+		// f.setBackground(Color.black); // doesn't work
+		f.setTitle("hosptial");
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setLocationRelativeTo(null);
+		f.setVisible(true);
+
+	}
+}

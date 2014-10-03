@@ -1,0 +1,52 @@
+package hospital;
+
+import java.awt.Graphics;
+import java.util.Random;
+
+public class Doctor extends PersonSet {
+	int APatient;
+
+	public Doctor(int x, int y) {
+		super(x, y);
+		xp = 5;
+	}
+
+	public void draw(Graphics g, Building B) {
+		g.drawOval(x - radius, y - radius, radius * 2, radius * 2);
+		move();
+		//touching(B);
+
+	}
+
+	public void heal() {
+		boolean healed = false;
+		int success;
+		while(healed == false){
+			Random r = new Random();
+			success =  r.nextInt(100)+ 1;
+			if(success  <= xp){
+				B.p[APatient].setIll = false;
+						healed = true;
+			}
+		}
+	}
+
+	public void move() {
+		
+	}
+
+	public void touching(Building B) {
+		int playerX = B.p[APatient].getX();
+		int playerY = B.p[APatient].getY();
+		int playerR = B.p[APatient].getRadius();
+		// System.out.println(playerX);
+		int a = x - playerX;
+		int bb = y - playerY;
+		int collide = radius + playerR;
+		// dist between object
+		double c = Math.sqrt((double) (a * a) + (double) (bb * bb));
+		if (c < collide) {
+			heal();
+		}
+	}
+}

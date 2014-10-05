@@ -1,52 +1,92 @@
 package hospital;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
 public class Doctor extends PersonSet {
-	int APatient;
-
+	AssignPatient2 Ass;
+	int APatient = -1;
+	private boolean assigned = false;
+	
 	public Doctor(int x, int y) {
+
 		super(x, y);
-		xp = 5;
-	}
+		
+		xp = 100;
+		
+		}
+	
 
 	public void draw(Graphics g, Building B) {
-		g.drawOval(x - radius, y - radius, radius * 2, radius * 2);
-		move();
-		//touching(B);
-
+		
+		AssignPatient2 Ass = new AssignPatient2();
+		g.setColor(Color.RED);
+		g.fillOval(x - radius, y - radius, radius * 2, radius * 2);
+		if (assigned == true) {
+			move(B);
+			touching(B);
+		} else {
+			APatient = Ass.Assignable(B, x,y);
+			
+			if (APatient != -1) {
+				assigned = true;
+				B.p[APatient].setAssigned(true);
+			}
+		}
+		
 	}
 
-	public void heal() {
+	public void heal(Building B) {
 		boolean healed = false;
 		int success;
-		while(healed == false){
+		if (healed == false) {
 			Random r = new Random();
-			success =  r.nextInt(100)+ 1;
-			if(success  <= xp){
-				B.p[APatient].setIll = false;
-						healed = true;
+			success = r.nextInt(100) + 1;
+			if (success <= xp) {
+				B.p[APatient].setIll(0);
+				healed = true;
+				assigned = false;
+				B.s.setNumsick(B.s.getNumsick()-1);
+				xp++;
 			}
 		}
 	}
 
-	public void move() {
-		
+	public void move(Building B) {
+		int pX = B.p[APatient].getX();
+		int pY = B.p[APatient].getY();
+		if(pX > x ){
+			x +=5;
+		}else{
+			x-=5;
+		}
+		if(pY > y){
+			y +=5;
+		}
+		else{
+			y -=5;
+		}
 	}
 
+	@SuppressWarnings("static-access")
 	public void touching(Building B) {
-		int playerX = B.p[APatient].getX();
-		int playerY = B.p[APatient].getY();
-		int playerR = B.p[APatient].getRadius();
+		int patientX = B.p[APatient].getX();
+		int patientY = B.p[APatient].getY();
+		int patientR = B.p[APatient].getRadius();
 		// System.out.println(playerX);
-		int a = x - playerX;
-		int bb = y - playerY;
-		int collide = radius + playerR;
+		int a = x - patientX;
+		int bb = y - patientY;
+		int collide = radius + patientR;
 		// dist between object
 		double c = Math.sqrt((double) (a * a) + (double) (bb * bb));
 		if (c < collide) {
-			heal();
+			heal(B);
+			//System.out.println("touching");
 		}
+	}
+
+	public void setAssigned(final boolean assigned) {
+		this.assigned = assigned;
 	}
 }

@@ -1,0 +1,107 @@
+package hospital;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.Random;
+
+public class Patient extends PersonSet {
+	private boolean assigned,setup= false;
+
+	protected Patient(int x, int y) {
+		super(x, y);
+		Random r = new Random();
+		int infected = r.nextInt(2);
+		System.out.println(infected);
+		if (infected == 1) {
+		
+			ill = 1;
+			setup = true;
+			assigned = false;
+		} else {
+			ill = 0;
+			assigned = true;
+			
+		}
+	}
+
+	private double health = 1000, infectivity = 0.001;
+	private int ill; 
+	private boolean set = false, alive = true;
+
+	public void draw(Graphics g, Building B) {
+		if ( setup == true){
+			B.s.setNumsick(B.s.getNumsick()+1);
+			setup = false;
+		}
+		move();
+		// System.out.println(assigned);
+		if (set == false) {
+			Random r = new Random();
+			x = r.nextInt(1000) + 1;
+			y = r.nextInt(1000) + 1;
+			set = true;
+		}
+		if (ill == 0) {
+			g.setColor(Color.BLUE);
+
+			health++;
+			getill(B);
+		}
+		if (ill == 1) {
+			g.setColor(Color.GREEN);
+			health--;
+
+		}
+		g.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+		String hp = String.valueOf(health);
+		g.drawString(hp, x - radius, y - radius * 2);
+		if (health <= 0){
+			alive = false;
+		}
+	}
+
+	public void move() {
+		Random e = new Random();
+		int xmove = e.nextInt(5) - 2;
+		int ymove = e.nextInt(5) - 2;
+		x += xmove;
+		y += ymove;
+	}
+
+	public void getill(Building b){
+		Random r = new Random();
+		double infect = r.nextDouble() ;
+		if (infect <= infectivity*(b.s.getNumsick())){
+			ill = 1;
+			b.s.setNumsick(b.s.getNumsick()+ 1);
+			assigned = false;
+		}
+		
+	}
+
+	public void setIll(int ill) {
+		this.ill = ill;
+	}
+
+	public boolean isAssigned() {
+		return assigned;
+	}
+
+	public void setAssigned(final boolean assigned) {
+		this.assigned = assigned;
+	}
+	public boolean isAlive(){
+		return alive;
+	}
+
+	public void drawdead(Graphics g,Building B) {
+		assigned = true;
+		if(ill == 1){
+		B.s.setNumsick(B.s.getNumsick()-1);
+		 ill  = 0;
+		}
+		g.setColor(Color.BLACK);
+		g.drawLine(x, y, x +radius*2, y +radius*2);
+		g.drawLine(x + radius*2, y, x, y+radius*2);
+	}
+}

@@ -1,0 +1,20 @@
+package hospital;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+public class End {
+	public End() {
+
+	}
+	
+	public void finish(Graphics g,Building B){
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0,B.getWidth() , B.getHeight());
+		g.setColor(Color.YELLOW);
+		g.drawString("finished", B.getWidth()/2, B.getHeight()/5);
+		g.drawString("number dead: \n" + B.dead,B.getWidth()/2, B.getHeight()/4 );
+		g.drawString("number cured: \n" + (B.patnum - B.dead),B.getWidth()/2, B.getHeight()/3 );
+		
+	}
+}

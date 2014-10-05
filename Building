@@ -3,42 +3,78 @@ package hospital;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class Building extends JPanel {
-	Doctor d;
+	static int patnum = 29;
+	static int docnum;
+	int change;
+	int dead;
+	End e = new End();
+	Disease s = new Disease();
+	Doctor d[] = new Doctor[docnum];
+	Patient p[] = new Patient[patnum];
+
 	public Building() {
-		d = new Doctor(100, 200) ;
+		
 		setSize(1000, 1000);
 		setPreferredSize(new Dimension(1000, 1000));
 		setFocusable(true);
-
+		
+		System.out.println("1 \t" + docnum);
+		for (int i = 0; i < docnum; i++) {
+			d[i] = new Doctor(500, 500);
+		}
+		for (int i = 0; i < patnum; i++) {
+			p[i] = new Patient(500, 500);
+		}
 	}
 
 	public void paint(Graphics g) {
-		d.draw(g, this);
+		g.setColor(Color.WHITE);
+		// System.out.println(change);
+		g.fillRect(0, 0, getWidth(), getHeight());
+		
+		for (int i = 0; i < docnum; i++) {
+			d[i].draw(g, this);
+		}
+		dead = 0;
+		for (int i = 0; i < patnum; i++) {
+			if (p[i].isAlive() == true) {
+				p[i].draw(g, this);
+			} else {
+				p[i].drawdead(g, this);
+				dead++;
+				
+			}
+		}
+		if (s.getNumsick() <= 0){
+			e.finish(g, this);
+			
+		}
 		g.dispose();
 		repaint();
-
+		
 		try {
-			Thread.sleep(17);
+			Thread.sleep(10);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
-	public static void main(String arg[]) {
+	public static void main(String arg[]) {	
+		String numdoc = JOptionPane.showInputDialog("enter num of doctors");
+		docnum = Integer.parseInt(numdoc);
+		String numpatient = JOptionPane.showInputDialog("enter num of Patients");
+		patnum = Integer.parseInt(numpatient);
 		Building game = new Building();
 		JFrame f = new JFrame();
-		f.add(new JLabel(new ImageIcon("Libraries/Pictures/heart.png")));
 		f.setResizable(false);
 		f.add(game);
 		f.pack();
@@ -47,6 +83,5 @@ public class Building extends JPanel {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setLocationRelativeTo(null);
 		f.setVisible(true);
-
 	}
 }

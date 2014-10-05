@@ -1,0 +1,20 @@
+package hospital;
+
+public class Disease {
+private int numsick;
+
+	
+	public Disease() {
+	}
+	
+	
+	public int getNumsick() {
+		
+		return numsick;
+		
+	}
+	public void setNumsick(int numsick) {
+		this.numsick = numsick;
+	}
+	
+}

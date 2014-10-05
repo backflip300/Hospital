@@ -1,0 +1,28 @@
+package hospital;
+
+public class AssignPatient2 {
+	public AssignPatient2() {
+		// TODO Auto-generated constructor stub
+	}
+	public int Assignable(Building B, int x, int y){
+		int j = x;
+		int k = y;
+		double shortest = 1000;
+		
+		int returned = -1;
+		for (int i = 0; i < B.patnum; i ++){
+			if (B.p[i].isAssigned() == false ){
+				int patientX = B.p[i].getX();
+				int patientY = B.p[i].getY();
+				
+				double dist = Math.sqrt(((k-patientY)*(k-patientY))+((j-patientX)*(j-patientX)));
+				if (dist < shortest){
+					shortest = dist;
+					returned = i;
+				}
+			}
+		}
+		return returned;
+		
+	}
+}
